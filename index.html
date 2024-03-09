@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <title>Duck Clicker</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <meta property="og:title" content="Duck Counter"/>
+    <meta property="og:description" content="With each click of the duck, the counter takes flight, rising high into the digital light."/>
+    <meta property="og:image" content=""/>
+    <meta property="og:image:alt" content="Duck"/>
+    <script src="https://js.pusher.com/4.0/pusher.min.js"></script>
+</head>
+<body>
+<h1 class="title">Duck Clicker</h1>
+<h2>With each click of the duck, the counter takes flight, rising high into the digital light.</h2>
+<img src="img/duck.png" class="button vote-button" data-vote="1">
+<h1>Clicks: <span class="stat" id="vote-1">0</span></h1>
+<script src="https://js.pusher.com/4.0/pusher.min.js"></script>
+<script>
+    const pusher = new Pusher('98d8d70492430cf18c11', {
+        cluster: 'eu',
+        encrypted: true
+    });
+
+    const channel = pusher.subscribe('counter');
+
+    channel.bind('vote', data => {
+        let elem = document.querySelector(`#vote-${data.item}`),
+            votes = parseInt(elem.innerText);
+        elem.innerText = votes + 1;
+    });
+
+    const voteButtons = document.getElementsByClassName("vote-button");
+
+    function voteItem() {
+        let vote_id = this.getAttribute("data-vote");
+
+        // Make Ajax call with JavaScript Fetch API
+        fetch(`/vote?item_id=${vote_id}`)
+            .catch( e => { console.log(e); });
+    }
+
+    // IIFE - Executes on page load
+    (function() {
+        for (var i = 0; i < voteButtons.length; i++) {
+            voteButtons[i].addEventListener('click', voteItem);
+        }
+    })();
+</script>
+</body>
+</html>
