@@ -10,9 +10,9 @@ const API_ID = process.env.API_ID;
 const API_SECRET = process.env.API_SECRET;
 
 const pusher = new Pusher({
-    appId: process.env.API_ID,
-    key: process.env.API_KEY,
-    secret: process.env.API_SECRET,
+    appId: API_ID,
+    key: API_KEY,
+    secret: API_SECRET,
     cluster: "eu",
     useTLS: true
 });
